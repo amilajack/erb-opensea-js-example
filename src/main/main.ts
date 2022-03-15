@@ -12,6 +12,8 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { OpenSeaPort, Network } from 'opensea-js';
+import * as Web3 from 'web3';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -24,6 +26,13 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
+const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io');
+const seaport = new OpenSeaPort(provider, {
+  networkName: Network.Main,
+  apiKey: 'xxxxxxxxxxxxxxxx',
+});
+console.log(seaport);
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
